@@ -7,7 +7,7 @@ from selene import browser, have
     [
         (1366, 768),
         (1920, 1080),
-        (390, 844),   # mobile
+        (390, 844),  # mobile
     ]
 )
 def test_sign_in_desktop(window_size):
@@ -23,4 +23,3 @@ def test_sign_in_desktop(window_size):
 
     browser.all("a[href*='login']").by(have.text("Sign in")).first.click()
     browser.should(have.url_containing("/login"))
-

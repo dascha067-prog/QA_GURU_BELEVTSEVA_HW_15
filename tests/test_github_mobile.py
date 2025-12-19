@@ -17,4 +17,3 @@ def test_sign_in_mobile(window_size):
 
     browser.open("https://github.com/")
     browser.element("a[href='/login']").should(be.visible).click()
-
