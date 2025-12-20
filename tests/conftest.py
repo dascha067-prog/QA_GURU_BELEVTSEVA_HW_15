@@ -2,6 +2,13 @@ import pytest
 from selene import browser
 from selenium import webdriver
 
+@pytest.fixture
+def viewport(request):
+    width, height = request.param
+    browser.config.window_width = width
+    browser.config.window_height = height
+    return width, height
+
 
 @pytest.fixture(scope="function", autouse=True)
 def browser_setup():
@@ -11,31 +18,17 @@ def browser_setup():
     browser.quit()
 
 
-@pytest.fixture
-def desktop_window(request):
+@pytest.fixture(params=[(1366, 768), (1920, 1080)])
+def desktop_browser(request):
     width, height = request.param
-    aspect_ratio = width / height
-
-    # если соотношение сторон мобильное — пропускаем desktop-тест
-    if aspect_ratio <= 1:
-        pytest.skip("Mobile aspect ratio is not applicable for desktop test")
-
     browser.config.window_width = width
     browser.config.window_height = height
+    yield
 
-    return width, height
 
-
-@pytest.fixture
-def mobile_window(request):
+@pytest.fixture(params=[(390, 844), (414, 896)])
+def mobile_browser(request):
     width, height = request.param
-    aspect_ratio = width / height
-
-    # если соотношение сторон десктопное — пропускаем mobile-тест
-    if aspect_ratio > 1:
-        pytest.skip("Desktop aspect ratio is not applicable for mobile test")
-
     browser.config.window_width = width
     browser.config.window_height = height
-
-    return width, height
+    yield
